@@ -1,0 +1,171 @@
+#include <SFML/Graphics.hpp>
+#include <iostream>
+using namespace sf;
+using namespace std;
+int main() {
+	VideoMode vm(1920, 1080);
+	RenderWindow window(vm, "Timber!!!");
+	
+	Texture textureBg, textureTree, textureBee, textureCloud1, textureCloud2, textureCloud3;
+	
+	/* Loading Textures */
+	textureBg.loadFromFile("Timber_/graphics/background.png");
+	textureTree.loadFromFile("Timber_/graphics/tree.png");
+	textureBee.loadFromFile("Timber_/graphics/bee.png");
+	textureCloud1.loadFromFile("Timber_/graphics/cloud.png");
+	textureCloud2.loadFromFile("Timber_/graphics/cloud.png");
+	textureCloud3.loadFromFile("Timber_/graphics/cloud.png");
+	
+	Sprite spriteBg, spriteTree, spriteBee, spriteCloud1, spriteCloud2, spriteCloud3;
+	
+	/* Setting Bg */
+        spriteBg.setTexture(textureBg);
+        spriteBg.setPosition(0, 0);
+        
+        /* Setting Tree */
+        spriteTree.setTexture(textureTree);
+        spriteTree.setPosition(700, -150);
+        
+        /* Setting Bee */
+        spriteBee.setTexture(textureBee);
+        spriteBee.setPosition(0, 730);
+        
+        /* Setting Clouds */
+        spriteCloud1.setTexture(textureCloud1);
+        spriteCloud1.setPosition(0, 50);
+        spriteCloud2.setTexture(textureCloud2);
+        spriteCloud2.setPosition(0, 150);
+        spriteCloud3.setTexture(textureCloud3);
+        spriteCloud3.setPosition(0, 250);
+        
+        /* Scaling Components */
+        spriteCloud1.setScale(0.5f, 0.5f);
+        spriteCloud2.setScale(0.5f, 0.5f);
+        spriteCloud3.setScale(0.5f, 0.5f);
+        
+        spriteTree.setScale(0.5f, 1.0f);
+        
+        /* Boolean Variables */
+        bool beeActive = false;
+        bool cloud1Active = false;
+        bool cloud2Active = false;
+        bool cloud3Active = false;
+        
+        /* Speeds */
+        float beeSpeed = 0.0f;
+        float cloud1Speed = 0.0f;
+        float cloud2Speed = 0.0f;
+        float cloud3Speed = 0.0f;
+        
+        Time dt;
+        Clock clock;
+      
+      
+	while(window.isOpen()) {
+		/* Restart Clock every single time */
+		dt = clock.restart();
+		
+	        /* ------------------ Event Polling Start ------------------
+	        		(So that game doesn't quit itself)  	    */
+	        Event event;
+                while (window.pollEvent(event)) {
+                  if (event.type == event.Closed) {
+                    window.close();
+                  }
+                }
+                /* ------------------ Event Polling End ------------------ */
+                
+ 		if (Keyboard::isKeyPressed(Keyboard::Escape)){
+ 			window.close();
+ 		}
+		
+		/* ------------------ Moving Bee ------------------ */
+		
+		if(!beeActive) {
+			srand((int)time(0) * 10);
+			beeSpeed = (rand() % 200) + 300;
+			// cout << "beeSpeed is = " << beeSpeed << endl;
+			
+			float height = (rand() % 500) + 300;
+			// cout << "beeHeight is = " << height << endl;
+			spriteBee.setPosition(2000, height);
+			beeActive = true;
+		} else {
+			spriteBee.setPosition(
+				spriteBee.getPosition().x - (beeSpeed * dt.asSeconds()),
+				spriteBee.getPosition().y				
+			);
+			if(spriteBee.getPosition().x < -100) {
+				beeActive = false;
+			}
+		}
+		
+		/* ------------------ Moving Clouds ------------------ */
+		if (!cloud1Active) {
+			srand((int)time(0) * 10);
+			cloud1Speed = (rand() % 200);
+			
+			srand((int)time(0) * 10);
+			float height = (rand() % 50);
+			spriteCloud1.setPosition(-200, height);
+			cloud1Active = true;
+		} else {
+			spriteCloud1.setPosition(
+				spriteCloud1.getPosition().x + (cloud1Speed * dt.asSeconds()),
+				spriteCloud1.getPosition().y
+			);
+			if(spriteCloud1.getPosition().x > 1920) {
+				cloud1Active = false;
+			}
+		}
+		
+		if (!cloud2Active) {
+			srand((int)time(0) * 10);
+			cloud2Speed = (rand() % 250) + 50;
+			
+			srand((int)time(0) * 10);
+			float height = (rand() % 150);
+			spriteCloud2.setPosition(-200, height);
+			cloud2Active = true;
+		} else {
+			spriteCloud2.setPosition(
+				spriteCloud2.getPosition().x + (cloud2Speed * dt.asSeconds()),
+				spriteCloud2.getPosition().y
+			);
+			if(spriteCloud2.getPosition().x > 1920) {
+				cloud2Active = false;
+			}
+		}
+		
+		if (!cloud3Active) {
+			srand((int)time(0) * 10);
+			cloud3Speed = (rand() % 300) + 100;
+			
+			srand((int)time(0) * 10);
+			float height = (rand() % 250);
+			spriteCloud3.setPosition(-200, height);
+			cloud3Active = true;
+		} else {
+			spriteCloud3.setPosition(
+				spriteCloud3.getPosition().x + (cloud3Speed * dt.asSeconds()),
+				spriteCloud3.getPosition().y
+			);
+			if(spriteCloud3.getPosition().x > 1920) {
+				cloud3Active = false;
+			}
+		}
+ 	  
+ 		window.clear();
+ 		
+ 		/* Drawing Sprites on Window */
+ 		window.draw(spriteBg);
+ 		window.draw(spriteTree);
+ 		window.draw(spriteBee);
+ 		window.draw(spriteCloud1);
+ 		window.draw(spriteCloud2);
+ 		window.draw(spriteCloud3);
+ 		
+ 		window.display();
+	}
+	return 0;
+}
