@@ -92,7 +92,7 @@ Timber_/
 ├── sound/         # Audio files
 ├── fonts/         # Game fonts
 │
-└── main.cpp       # Main game source code
+└── timber.cpp       # Main game source code
 ```
 
 ---
